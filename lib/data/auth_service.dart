@@ -38,7 +38,9 @@ class AuthService {
 
       return credential;
     } on FirebaseAuthException catch (e) {
-      throw _handleAuthException(e);
+      throw AuthException(_handleAuthException(e));
+    } catch (e) {
+      throw AuthException('Sign up failed: ${e.toString()}');
     }
   }
 
@@ -53,7 +55,9 @@ class AuthService {
         password: password,
       );
     } on FirebaseAuthException catch (e) {
-      throw _handleAuthException(e);
+      throw AuthException(_handleAuthException(e));
+    } catch (e) {
+      throw AuthException('Sign in failed: ${e.toString()}');
     }
   }
 
@@ -83,8 +87,9 @@ class AuthService {
       // Sign in to Firebase with Google credential
       return await _auth.signInWithCredential(credential);
     } on FirebaseAuthException catch (e) {
-      throw _handleAuthException(e);
+      throw AuthException(_handleAuthException(e));
     } catch (e) {
+      if (e is AuthException) rethrow;
       throw AuthException('Google Sign-In failed: ${e.toString()}');
     }
   }
@@ -98,7 +103,9 @@ class AuthService {
     try {
       await _auth.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
-      throw _handleAuthException(e);
+      throw AuthException(_handleAuthException(e));
+    } catch (e) {
+      throw AuthException('Password reset failed: ${e.toString()}');
     }
   }
 

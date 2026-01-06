@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/atmospheric_background.dart';
+import '../../../core/constants/app_strings.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -14,19 +15,21 @@ class WelcomeScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 24.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const Spacer(),
                 
                 // App Branding
-                Container(
-                  width: 72,
-                  height: 72,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppTheme.primary,
+                Center(
+                  child: Container(
+                    width: 72,
+                    height: 72,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppTheme.primary,
+                    ),
+                    child: const Icon(Icons.bolt_rounded, size: 44, color: Colors.black),
                   ),
-                  child: const Icon(Icons.bolt_rounded, size: 40, color: Colors.black),
                 ),
 
                 const SizedBox(height: 40),
@@ -34,10 +37,12 @@ class WelcomeScreen extends StatelessWidget {
                 // Large Title
                 Text(
                   'RUNLIFT',
+                  textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.displayLarge,
                 ),
                 Text(
                   '28 DAYS TO 5K',
+                  textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                     color: AppTheme.primary,
                   ),
@@ -47,6 +52,7 @@ class WelcomeScreen extends StatelessWidget {
 
                 Text(
                   'Precision training for the modern athlete. No fluff. Just results.',
+                  textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Colors.white70,
                     height: 1.6,
@@ -71,7 +77,7 @@ class WelcomeScreen extends StatelessWidget {
                   child: TextButton(
                     onPressed: () => context.push('/login'),
                     child: Text(
-                      'ALREADY A MEMBER? SIGN IN',
+                      AppStrings.alreadyAMember,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Colors.white54,
                         letterSpacing: 1,
@@ -79,6 +85,21 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+
+                const SizedBox(height: 16),
+
+                // Health Disclaimer
+                Center(
+                  child: Text(
+                    AppStrings.healthDisclaimer,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white.withAlpha(80),
+                      fontSize: 10,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
               ],
             ),
           ),

@@ -11,14 +11,27 @@ class AppTheme {
   static const surfaceVariant = Color(0xFF1A1F3A);
   
   // Glassmorphism tokens
-  static const glassBorder = Color(0x33FFFFFF);
-  static const glassBackground = Color(0x1AFFFFFF);
+  static const glassBorder = Color(0x4DFFFFFF);
+  static const glassBackground = Color(0x14FFFFFF);
   
-  static const textPrimary = Color(0xFFF5F5F5);
-  static const textSecondary = Color(0xFF8E92B2);
-  static const success = Color(0xFF00FF88);
-  static const warning = Color(0xFFFFB800);
-  static const error = Color(0xFFFF3366);
+  static const textPrimary = Color(0xFFFFFFFF);
+  static const textSecondary = Color(0xFFA1A3BA);
+  static const success = Color(0xFF00FF9D);
+  static const warning = Color(0xFFFFCC00);
+  static const error = Color(0xFFFF2E63);
+
+  // Premium Gradients
+  static const primaryGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [primary, Color(0xFF00A2FF)],
+  );
+
+  static const surfaceGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0x1AFFFFFF), Color(0x05FFFFFF)],
+  );
 
   // Light Theme
   static final lightTheme = ThemeData(

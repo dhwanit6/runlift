@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import '../../core/theme/app_theme.dart';
 import '../../core/utils/color_utils.dart';
 
 /// Simplified GlassCard - minimal blur, no heavy effects
@@ -15,8 +16,8 @@ class GlassCard extends StatelessWidget {
   const GlassCard({
     required this.child,
     this.padding,
-    this.blur = 10.0, // Reduced from 20
-    this.opacity = 0.08,
+    this.blur = 30.0,
+    this.opacity = 0.1,
     this.borderRadius,
     this.border,
     this.backgroundColor,
@@ -25,7 +26,7 @@ class GlassCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final radius = borderRadius ?? BorderRadius.circular(20);
+    final radius = borderRadius ?? BorderRadius.circular(24);
 
     return ClipRRect(
       borderRadius: radius,
@@ -35,11 +36,12 @@ class GlassCard extends StatelessWidget {
           padding: padding,
           decoration: BoxDecoration(
             borderRadius: radius,
-            color: backgroundColor ?? Colors.white.withAlphaValue(opacity),
+            gradient: backgroundColor == null ? AppTheme.surfaceGradient : null,
+            color: backgroundColor,
             border: border ??
                 Border.all(
-                  color: Colors.white.withAlphaValue(0.1),
-                  width: 1,
+                  color: Colors.white.withAlphaValue(0.15),
+                  width: 0.5,
                 ),
           ),
           child: child,

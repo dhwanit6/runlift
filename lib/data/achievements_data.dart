@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+/// Achievement and streak system for gamification
+library;
 
 /// Represents a streak of consecutive workout days
 class Streak {
@@ -241,6 +242,7 @@ List<Achievement> checkAchievements({
         } else if (achievement.id == 'night_owl' && workoutTime != null) {
           shouldUnlock = workoutTime.hour >= 21;
         }
+        // Note: comeback_kid is handled in AchievementsNotifier.onWorkoutCompleted
         break;
     }
 

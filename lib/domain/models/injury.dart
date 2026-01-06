@@ -1,4 +1,5 @@
 /// Injury prediction and body awareness models.
+library;
 /// 
 /// This file contains models for tracking user symptoms, predicting
 /// potential injuries, and providing appropriate guidance.

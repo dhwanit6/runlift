@@ -60,7 +60,7 @@ class _HomeShellState extends State<HomeShell> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildNavItem(0, Icons.bolt_rounded, 'TODAY'),
+              _buildNavItem(0, Icons.directions_run, 'TODAY'),
               _buildNavItem(1, Icons.calendar_month_rounded, 'PLAN'),
               _buildNavItem(2, Icons.analytics_rounded, 'STATS'),
               _buildNavItem(3, Icons.person_rounded, 'YOU'),
@@ -91,15 +91,15 @@ class _HomeShellState extends State<HomeShell> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
-              icon,
+              index == 0 ? Icons.bolt_rounded : icon,
               color: isSelected ? Colors.black : Colors.white54,
-              size: 22,
+              size: 24,
             ),
             if (isSelected) ...[
               const SizedBox(width: 8),
               Text(
                 label,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 12,
                   fontWeight: FontWeight.w800,

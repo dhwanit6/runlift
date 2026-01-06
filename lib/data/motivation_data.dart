@@ -1,4 +1,6 @@
 /// Psychological motivation and engagement logic.
+
+library;
 /// 
 /// Provides contextual motivation based on the user's progress and state.
 

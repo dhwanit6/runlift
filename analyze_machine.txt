@@ -1,0 +1,60 @@
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\data\\training_data.dart|785|11|325|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\data\\training_data.dart|799|11|428|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\data\\training_data.dart|814|11|321|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\data\\training_data.dart|820|11|329|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\data\\training_data.dart|846|11|336|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\data\\training_data.dart|861|11|327|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\data\\training_data.dart|875|11|310|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\data\\training_data.dart|881|11|345|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\data\\training_data.dart|906|11|285|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\data\\training_data.dart|920|11|322|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\data\\training_data.dart|934|11|281|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\data\\training_data.dart|940|11|304|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\data\\training_data.dart|965|11|275|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\data\\training_data.dart|979|11|310|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\data\\training_data.dart|993|11|301|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\data\\training_data.dart|999|11|338|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\features\\home\\presentation\\home_shell.dart|109|24|187|Use 'const' with the constructor to improve performance.
+INFO|HINT|DEPRECATED_MEMBER_USE|D:\\running app\\runlift\\lib\\features\\home\\presentation\\today_screen.dart|77|45|11|'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\features\\home\\presentation\\today_screen.dart|323|16|139|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\features\\home\\presentation\\today_screen.dart|337|18|114|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\features\\home\\presentation\\today_screen.dart|375|17|195|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\features\\home\\presentation\\today_screen.dart|461|27|114|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\features\\home\\presentation\\today_screen.dart|470|27|112|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\features\\onboarding\\presentation\\fitness_check_screen.dart|79|19|304|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\features\\onboarding\\presentation\\fitness_check_screen.dart|80|28|246|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\features\\onboarding\\presentation\\fitness_check_screen.dart|82|30|122|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\features\\onboarding\\presentation\\welcome_screen.dart|26|31|126|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\features\\profile\\presentation\\profile_screen.dart|27|15|963|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_LITERALS_TO_CREATE_IMMUTABLES|D:\\running app\\runlift\\lib\\features\\profile\\presentation\\profile_screen.dart|28|27|913|Use 'const' literals as arguments to constructors of '@immutable' classes.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\features\\profile\\presentation\\profile_screen.dart|29|19|872|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_LITERALS_TO_CREATE_IMMUTABLES|D:\\running app\\runlift\\lib\\features\\profile\\presentation\\profile_screen.dart|31|31|744|Use 'const' literals as arguments to constructors of '@immutable' classes.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\features\\profile\\presentation\\profile_screen.dart|131|40|190|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\features\\profile\\presentation\\profile_screen.dart|132|26|133|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\features\\profile\\presentation\\profile_screen.dart|134|28|32|Use 'const' with the constructor to improve performance.
+INFO|HINT|DEPRECATED_MEMBER_USE|D:\\running app\\runlift\\lib\\features\\workout\\presentation\\active_workout_screen.dart|539|57|11|'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss.
+INFO|HINT|DEPRECATED_MEMBER_USE|D:\\running app\\runlift\\lib\\features\\workout\\presentation\\active_workout_screen.dart|557|26|11|'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss.
+INFO|HINT|DEPRECATED_MEMBER_USE|D:\\running app\\runlift\\lib\\features\\workout\\presentation\\active_workout_screen.dart|583|33|11|'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss.
+INFO|HINT|DEPRECATED_MEMBER_USE|D:\\running app\\runlift\\lib\\features\\workout\\presentation\\active_workout_screen.dart|611|43|11|'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss.
+INFO|HINT|DEPRECATED_MEMBER_USE|D:\\running app\\runlift\\lib\\features\\workout\\presentation\\active_workout_screen.dart|611|74|11|'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss.
+INFO|HINT|DEPRECATED_MEMBER_USE|D:\\running app\\runlift\\lib\\features\\workout\\presentation\\workout_summary_screen.dart|158|75|11|'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss.
+INFO|HINT|DEPRECATED_MEMBER_USE|D:\\running app\\runlift\\lib\\features\\workout\\presentation\\workout_summary_screen.dart|160|45|11|'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\features\\workout\\presentation\\workout_summary_screen.dart|192|49|180|Use 'const' with the constructor to improve performance.
+INFO|LINT|UNNECESSARY_STRING_INTERPOLATIONS|D:\\running app\\runlift\\lib\\features\\workout\\presentation\\workout_summary_screen.dart|238|37|54|Unnecessary use of string interpolation.
+INFO|LINT|UNNECESSARY_STRING_INTERPOLATIONS|D:\\running app\\runlift\\lib\\features\\workout\\presentation\\workout_summary_screen.dart|286|52|8|Unnecessary use of string interpolation.
+INFO|HINT|DEPRECATED_MEMBER_USE|D:\\running app\\runlift\\lib\\features\\workout\\presentation\\workout_summary_screen.dart|399|42|11|'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\main.dart|98|17|20|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\main.dart|99|17|115|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\main.dart|99|40|91|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\main.dart|100|17|20|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\main.dart|101|17|50|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\shared\\widgets\\skeleton_loading.dart|151|12|972|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\shared\\widgets\\skeleton_loading.dart|152|14|934|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\shared\\widgets\\skeleton_loading.dart|154|16|855|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_LITERALS_TO_CREATE_IMMUTABLES|D:\\running app\\runlift\\lib\\shared\\widgets\\skeleton_loading.dart|156|21|757|Use 'const' literals as arguments to constructors of '@immutable' classes.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\shared\\widgets\\skeleton_loading.dart|169|13|42|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\shared\\widgets\\skeleton_loading.dart|198|15|42|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\shared\\widgets\\skeleton_loading.dart|224|17|310|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\shared\\widgets\\skeleton_loading.dart|236|13|40|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\shared\\widgets\\skeleton_loading.dart|236|27|25|Use 'const' with the constructor to improve performance.
+INFO|LINT|PREFER_CONST_CONSTRUCTORS|D:\\running app\\runlift\\lib\\shared\\widgets\\skeleton_loading.dart|239|13|348|Use 'const' with the constructor to improve performance.

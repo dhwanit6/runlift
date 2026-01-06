@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/atmospheric_background.dart';
 import '../../../data/auth_provider.dart';
+import '../../../core/constants/app_strings.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SignupScreen extends ConsumerStatefulWidget {
   const SignupScreen({super.key});
@@ -48,7 +50,9 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
       );
 
       if (mounted) {
-        context.go('/today');
+        // Show onboarding celebration
+        await _showCelebrationDialog();
+        if (mounted) context.go('/today');
       }
     } catch (e) {
       if (mounted) {
@@ -80,7 +84,9 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
       await ref.read(authProvider.notifier).signInWithGoogle();
 
       if (mounted) {
-        context.go('/today');
+        // Show onboarding celebration
+        await _showCelebrationDialog();
+        if (mounted) context.go('/today');
       }
     } catch (e) {
       if (mounted) {
@@ -96,6 +102,64 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
         setState(() => _isLoading = false);
       }
     }
+  }
+
+  Future<void> _showCelebrationDialog() async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          padding: const EdgeInsets.all(32),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [const Color(0xFF1A1A3E), AppTheme.primary.withAlpha(40)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(color: AppTheme.primary.withAlpha(100), width: 2),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('🎯', style: TextStyle(fontSize: 64)),
+              const SizedBox(height: 16),
+              const Text(
+                'WELCOME, ATHLETE',
+                style: TextStyle(color: AppTheme.primary, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'YOUR 28-DAY\nTRANSFORMATION\nSTARTS NOW',
+                style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900, height: 1.2),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                '3 runs + 4 recovery days per week.\nNo excuses. Pure results.',
+                style: TextStyle(color: Colors.white54, fontSize: 13),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.of(ctx).pop(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.primary,
+                    foregroundColor: Colors.black,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                  ),
+                  child: const Text('BEGIN MISSION', style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1)),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -224,19 +288,35 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                           activeColor: AppTheme.primary,
                         ),
                         Expanded(
-                          child: RichText(
-                            text: TextSpan(
-                              text: 'I agree to the ',
-                              style: TextStyle(color: Colors.white.withAlpha(180), fontSize: 12),
-                              children: const [
-                                TextSpan(
-                                  text: 'Privacy Policy',
-                                  style: TextStyle(
-                                    color: AppTheme.primary,
-                                    decoration: TextDecoration.underline,
+                          child: GestureDetector(
+                            onTap: () async {
+                              final url = Uri.parse(AppStrings.privacyUrl);
+                              if (await canLaunchUrl(url)) {
+                                await launchUrl(url);
+                              }
+                            },
+                            child: RichText(
+                              text: TextSpan(
+                                text: 'I agree to the ',
+                                style: TextStyle(color: Colors.white.withAlpha(180), fontSize: 12),
+                                children: const [
+                                  TextSpan(
+                                    text: AppStrings.privacyPolicy,
+                                    style: TextStyle(
+                                      color: AppTheme.primary,
+                                      decoration: TextDecoration.underline,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                  TextSpan(text: ' and '),
+                                  TextSpan(
+                                    text: AppStrings.termsOfService,
+                                    style: TextStyle(
+                                      color: AppTheme.primary,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),

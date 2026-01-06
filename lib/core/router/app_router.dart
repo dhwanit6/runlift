@@ -13,6 +13,8 @@ import '../../features/workout/presentation/active_workout_screen.dart';
 import '../../features/program/presentation/program_screen.dart';
 import '../../features/progress/presentation/progress_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
+import '../../features/achievements/presentation/achievements_screen.dart';
+import '../../features/profile/presentation/privacy_policy_screen.dart';
 
 /// Auth state stream for router refreshing
 class AuthNotifier extends ChangeNotifier {
@@ -41,11 +43,12 @@ final routerProvider = Provider<GoRouter>((ref) {
       final isPublicRoute = currentPath == '/welcome' ||
                             currentPath == '/login' ||
                             currentPath == '/signup' ||
+                            currentPath == '/auth' ||
                             currentPath.startsWith('/onboarding');
       
       // If user is authenticated and on login/signup/welcome, redirect to app
       if (isAuthenticated && 
-          (currentPath == '/welcome' || currentPath == '/login' || currentPath == '/signup')) {
+          (currentPath == '/welcome' || currentPath == '/login' || currentPath == '/signup' || currentPath == '/auth')) {
         return '/today';
       }
       
@@ -124,6 +127,16 @@ final routerProvider = Provider<GoRouter>((ref) {
             builder: (context, state) => const ProfileScreen(),
           ),
         ],
+      ),
+
+      // ==================== ACHIEVEMENTS FULLSCREEN ====================
+      GoRoute(
+        path: '/achievements',
+        builder: (context, state) => const AchievementsScreen(),
+      ),
+      GoRoute(
+        path: '/privacy-policy',
+        builder: (context, state) => const PrivacyPolicyScreen(),
       ),
 
       // ==================== ACTIVE WORKOUT (FULLSCREEN) ====================

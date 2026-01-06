@@ -207,46 +207,208 @@ class ProgramScreen extends ConsumerWidget {
               final dayNames = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
               final isRunDay = dayData.workout.type == WorkoutType.run;
 
-              return Container(
-                decoration: BoxDecoration(
-                  color: isCompleted
-                      ? (isRunDay ? AppTheme.primary : AppTheme.success)
-                      : isToday
-                          ? AppTheme.primary.withAlphaValue(0.2)
-                          : Colors.white.withAlphaValue(isActive ? 0.06 : 0.03),
-                  borderRadius: BorderRadius.circular(10),
-                  border: isToday
-                      ? Border.all(color: AppTheme.primary, width: 2)
-                      : null,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      dayNames[index],
-                      style: TextStyle(
-                        color: isCompleted ? Colors.black : (isActive ? Colors.white70 : Colors.white30),
-                        fontSize: 11,
-                        fontWeight: FontWeight.bold,
+              return GestureDetector(
+                onTap: () => _showMissionBriefing(context, dayData, dayNum),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: isCompleted
+                        ? (isRunDay ? AppTheme.primary : AppTheme.success)
+                        : isToday
+                            ? AppTheme.primary.withAlphaValue(0.2)
+                            : Colors.white.withAlphaValue(isActive ? 0.06 : 0.03),
+                    borderRadius: BorderRadius.circular(10),
+                    border: isToday
+                        ? Border.all(color: AppTheme.primary, width: 2)
+                        : null,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        dayNames[index],
+                        style: TextStyle(
+                          color: isCompleted ? Colors.black : (isActive ? Colors.white70 : Colors.white30),
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 2),
-                    Icon(
-                      isCompleted
-                          ? Icons.check_rounded
-                          : (isRunDay ? Icons.directions_run_rounded : 
-                             dayData.workout.type == WorkoutType.rest ? Icons.nightlight_round : 
-                             Icons.self_improvement_rounded),
-                      size: 16,
-                      color: isCompleted ? Colors.black : (isActive ? Colors.white.withAlphaValue(0.4) : Colors.white.withAlphaValue(0.2)),
-                    ),
-                  ],
+                      const SizedBox(height: 2),
+                      Icon(
+                        isCompleted
+                            ? Icons.check_rounded
+                            : (isRunDay ? Icons.directions_run_rounded : 
+                               dayData.workout.type == WorkoutType.rest ? Icons.nightlight_round : 
+                               Icons.self_improvement_rounded),
+                        size: 16,
+                        color: isCompleted ? Colors.black : (isActive ? Colors.white.withAlphaValue(0.4) : Colors.white.withAlphaValue(0.2)),
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
           ),
         ],
       ),
+    );
+  }
+
+  void _showMissionBriefing(BuildContext context, TrainingDay dayData, int dayNum) {
+    final workout = dayData.workout;
+    final isRun = workout.type == WorkoutType.run;
+    final isRest = workout.type == WorkoutType.rest;
+    final color = isRun ? AppTheme.primary : (isRest ? AppTheme.success : AppTheme.secondary);
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) => Container(
+        height: MediaQuery.of(context).size.height * 0.6,
+        decoration: BoxDecoration(
+          color: AppTheme.surface,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
+          border: Border(top: BorderSide(color: color.withAlphaValue(0.5))),
+        ),
+        child: Column(
+          children: [
+            // Handle
+            Center(
+              child: Container(
+                margin: const EdgeInsets.only(top: 12),
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.white24,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
+            
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: color.withAlphaValue(0.1),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: color.withAlphaValue(0.3)),
+                          ),
+                          child: Text(
+                            'DAY $dayNum INTELLIGENCE',
+                            style: TextStyle(
+                              color: color,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1,
+                            ),
+                          ),
+                        ),
+                        if (isRest)
+                          const Icon(Icons.nightlight_round, color: AppTheme.success)
+                        else
+                          Icon(isRun ? Icons.directions_run : Icons.fitness_center, color: color),
+                      ],
+                    ),
+                    
+                    const SizedBox(height: 24),
+                    
+                    Text(
+                      workout.name.toUpperCase(),
+                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        color: Colors.white,
+                        fontSize: 28,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      workout.description,
+                      style: const TextStyle(color: Colors.white70, height: 1.5),
+                    ),
+                    
+                    const SizedBox(height: 32),
+                    
+                    // Stats Row
+                    Row(
+                      children: [
+                        _buildBriefingStat(
+                          context, 
+                          Icons.timer_outlined, 
+                          '${workout.estimatedDuration.inMinutes} MIN', 
+                          'DURATION',
+                        ),
+                        const SizedBox(width: 24),
+                        _buildBriefingStat(
+                          context, 
+                          isRun ? Icons.speed : Icons.monitor_weight_outlined, 
+                          isRun ? 'N/A' : '${workout.targetRpe}/10', 
+                          isRun ? 'PACE' : 'INTENSITY',
+                        ),
+                        const SizedBox(width: 24),
+                        _buildBriefingStat(
+                          context, 
+                          Icons.backpack_outlined, 
+                          isRun ? 'SHOES' : 'GYM', 
+                          'GEAR',
+                        ),
+                      ],
+                    ),
+                    
+                    const Spacer(),
+                    
+                    SizedBox(
+                      width: double.infinity,
+                      height: 56,
+                      child: ElevatedButton(
+                        onPressed: () => Navigator.pop(context),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white.withAlphaValue(0.1),
+                          foregroundColor: Colors.white,
+                        ),
+                        child: const Text('DISMISS BRIEFING'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBriefingStat(BuildContext context, IconData icon, String value, String label) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon, color: Colors.white54, size: 20),
+        const SizedBox(height: 8),
+        Text(
+          value,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+        ),
+        Text(
+          label,
+          style: const TextStyle(
+            color: Colors.white30,
+            fontSize: 10,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 1,
+          ),
+        ),
+      ],
     );
   }
 }

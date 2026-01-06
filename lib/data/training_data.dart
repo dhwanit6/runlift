@@ -1,4 +1,7 @@
 /// Complete 28-day training program data.
+// ignore_for_file: prefer_const_constructors
+
+library;
 /// 
 /// This file contains the full training program for the "Couch to 5K in 28 days"
 /// program, including all workouts, exercises, warmups, and cooldowns.
@@ -15,12 +18,38 @@ const preRunWarmup = WarmupCooldown(
   isWarmup: true,
   estimatedDuration: Duration(minutes: 5),
   exercises: [
-    Exercise(name: 'Leg Swings', reps: 10, perSide: 'each leg'),
-    Exercise(name: 'Walking Lunges', reps: 5, perSide: 'each leg'),
-    Exercise(name: 'High Knees', duration: Duration(seconds: 20)),
-    Exercise(name: 'Butt Kicks', duration: Duration(seconds: 20)),
-    Exercise(name: 'Arm Circles', duration: Duration(seconds: 15)),
-    Exercise(name: 'Light Jog', duration: Duration(seconds: 60)),
+    Exercise(
+      name: 'Leg Swings', 
+      reps: 10, 
+      perSide: 'each leg',
+      description: 'Stand next to a wall for balance. Swing one leg forward and backward like a pendulum. Keep your upper body still. This loosens up your hips before running.',
+    ),
+    Exercise(
+      name: 'Walking Lunges', 
+      reps: 5, 
+      perSide: 'each leg',
+      description: 'Take a big step forward. Lower your back knee until it almost touches the ground. Perform a walking motion. Keep your chest up tall.',
+    ),
+    Exercise(
+      name: 'High Knees', 
+      duration: Duration(seconds: 20),
+      description: 'Run in place, lifting your knees as high as possible towards your chest. Pump your arms. It wakes up your nervous system.',
+    ),
+    Exercise(
+      name: 'Butt Kicks', 
+      duration: Duration(seconds: 20),
+      description: 'Jog in place, kicking your heels back to touch your glutes. This stretches your quads and activates your hamstrings.',
+    ),
+    Exercise(
+      name: 'Arm Circles', 
+      duration: Duration(seconds: 15),
+      description: 'Hold arms straight out to sides. Make big circles forward, then backward. Loosens up shoulders for better running posture.',
+    ),
+    Exercise(
+      name: 'Light Jog', 
+      duration: Duration(seconds: 60),
+      description: 'Very slow, easy jogging. Just to get the heart rate up slightly before the main workout.',
+    ),
   ],
 );
 
@@ -30,12 +59,41 @@ const postRunCooldown = WarmupCooldown(
   isWarmup: false,
   estimatedDuration: Duration(minutes: 6),
   exercises: [
-    Exercise(name: 'Quad Stretch', holdTime: Duration(seconds: 30), perSide: 'each leg'),
-    Exercise(name: 'Hamstring Stretch', holdTime: Duration(seconds: 30), perSide: 'each leg'),
-    Exercise(name: 'Calf Stretch', holdTime: Duration(seconds: 30), perSide: 'each leg'),
-    Exercise(name: 'Hip Flexor Stretch', holdTime: Duration(seconds: 30), perSide: 'each leg'),
-    Exercise(name: 'IT Band Stretch', holdTime: Duration(seconds: 30), perSide: 'each side'),
-    Exercise(name: "Child's Pose", holdTime: Duration(seconds: 30)),
+    Exercise(
+      name: 'Quad Stretch', 
+      holdTime: Duration(seconds: 30), 
+      perSide: 'each leg',
+      description: 'Stand on one leg. Pull your other heel towards your butt. Keep knees together. Push hips forward slightly to feel a stretch in the front thigh.',
+    ),
+    Exercise(
+      name: 'Hamstring Stretch', 
+      holdTime: Duration(seconds: 30), 
+      perSide: 'each leg',
+      description: 'Place one heel on the ground in front of you, leg straight. Bend the back knee and lean forward from your hips. Keep your back straight.',
+    ),
+    Exercise(
+      name: 'Calf Stretch', 
+      holdTime: Duration(seconds: 30), 
+      perSide: 'each leg',
+      description: 'Push against a wall with one foot back, heel on the ground. Lean forward until you feel a pull in the back of your lower leg.',
+    ),
+    Exercise(
+      name: 'Hip Flexor Stretch', 
+      holdTime: Duration(seconds: 30), 
+      perSide: 'each leg',
+      description: 'Kneel on one knee (lunge position). Push your hips forward while keeping your chest up. You should feel it in the front of the hip of the kneeling leg.',
+    ),
+    Exercise(
+      name: 'IT Band Stretch', 
+      holdTime: Duration(seconds: 30), 
+      perSide: 'each side',
+      description: 'Cross one leg behind the other. Lean to the side of the back leg. Push your hips out to the side to feel a stretch along the outer thigh.',
+    ),
+    Exercise(
+      name: "Child's Pose", 
+      holdTime: Duration(seconds: 30),
+      description: 'Kneel on the floor. Sit back on your heels. Reach arms forward on the ground. Rest forehead on the floor. Great for back release.',
+    ),
   ],
 );
 
@@ -54,11 +112,34 @@ const coreGluteWorkout = Workout(
   circuitRounds: 2,
   restBetweenRounds: Duration(seconds: 60),
   exercises: [
-    Exercise(name: 'Glute Bridges', reps: 15, description: 'Hold 2 seconds at top'),
-    Exercise(name: 'Dead Bug', reps: 10, perSide: 'each side'),
-    Exercise(name: 'Bird Dog', reps: 10, perSide: 'each side'),
-    Exercise(name: 'Plank', duration: Duration(seconds: 30)),
-    Exercise(name: 'Clamshells', reps: 15, perSide: 'each side'),
+    Exercise(
+      name: 'Glute Bridges', 
+      reps: 15, 
+      description: 'Lie on back, knees bent, feet flat. Lift hips until your body makes a straight line. Squeeze glutes hard at the top for 2 seconds. Lower slowly.',
+    ),
+    Exercise(
+      name: 'Dead Bug', 
+      reps: 10, 
+      perSide: 'each side',
+      description: 'Lie on back, arms and legs up in air. Lower opposite arm and leg towards floor slowly. Keep your lower back pressed into the floor.',
+    ),
+    Exercise(
+      name: 'Bird Dog', 
+      reps: 10, 
+      perSide: 'each side',
+      description: 'On hands and knees. Extend opposite arm and leg straight out. Keep back flat like a table. Don\'t let hips rotate.',
+    ),
+    Exercise(
+      name: 'Plank', 
+      duration: Duration(seconds: 30),
+      description: 'Hold a push-up position on your elbows. Keep body in a straight line from head to heels. Squeeze glutes and core tight. Don\'t let hips sag.',
+    ),
+    Exercise(
+      name: 'Clamshells', 
+      reps: 15, 
+      perSide: 'each side',
+      description: 'Lie on side, legs bent at 45 degrees. Keep feet touching. Lift top knee like a clam opening. Keep hips stacked, don\'t roll back.',
+    ),
   ],
 );
 
@@ -73,11 +154,33 @@ const upperBodyCoreWorkout = Workout(
   circuitRounds: 3,
   restBetweenRounds: Duration(seconds: 45),
   exercises: [
-    Exercise(name: 'Push-ups', reps: 10, description: 'Knee push-ups are fine'),
-    Exercise(name: 'Superman Hold', duration: Duration(seconds: 20)),
-    Exercise(name: 'Mountain Climbers', reps: 20, description: 'Total count'),
-    Exercise(name: 'Arm Circles', reps: 15, perSide: 'each direction'),
-    Exercise(name: 'Side Plank', duration: Duration(seconds: 20), perSide: 'each side'),
+    Exercise(
+      name: 'Push-ups', 
+      reps: 10, 
+      description: 'Hands shoulder-width apart. Lower chest to floor. Keep body straight. Use knees if needed to maintain good form.',
+    ),
+    Exercise(
+      name: 'Superman Hold', 
+      duration: Duration(seconds: 20),
+      description: 'Lie on stomach. Lift arms and legs off the ground simultaneously. Squeeze your lower back and glutes. Fly like Superman.',
+    ),
+    Exercise(
+      name: 'Mountain Climbers', 
+      reps: 20, 
+      description: 'Push-up position. Drive one knee to chest, then switch quickly. Keep hips low. Like running in a plank position.',
+    ),
+    Exercise(
+      name: 'Arm Circles', 
+      reps: 15, 
+      perSide: 'each direction',
+      description: 'Stand tall. large, controlled circles with your arms. 15 forward, 15 backward.',
+    ),
+    Exercise(
+      name: 'Side Plank', 
+      duration: Duration(seconds: 20), 
+      perSide: 'each side',
+      description: 'Lie on side, elbow under shoulder. Lift hips off ground. Create straight line from head to feet. Hold.',
+    ),
   ],
 );
 
@@ -92,11 +195,33 @@ const lowerBodyWorkout = Workout(
   circuitRounds: 3,
   restBetweenRounds: Duration(seconds: 60),
   exercises: [
-    Exercise(name: 'Bodyweight Squats', reps: 15),
-    Exercise(name: 'Reverse Lunges', reps: 10, perSide: 'each leg'),
-    Exercise(name: 'Calf Raises', reps: 20),
-    Exercise(name: 'Single Leg Glute Bridges', reps: 10, perSide: 'each leg'),
-    Exercise(name: 'Wall Sit', duration: Duration(seconds: 30)),
+    Exercise(
+      name: 'Bodyweight Squats', 
+      reps: 15,
+      description: 'Feet shoulder-width. Sit back like sitting in a chair. Keep chest up. Go down until thighs are parallel to floor. Stand back up.',
+    ),
+    Exercise(
+      name: 'Reverse Lunges', 
+      reps: 10, 
+      perSide: 'each leg',
+      description: 'Stand tall. Step one foot way back. Drop back knee towards ground. Keep front knee behind toe. Push back up to standing.',
+    ),
+    Exercise(
+      name: 'Calf Raises', 
+      reps: 20,
+      description: 'Stand on edge of a step or flat ground. Lift heels as high as possible. Lower slowly. Balance with a wall if needed.',
+    ),
+    Exercise(
+      name: 'Single Leg Glute Bridges', 
+      reps: 10, 
+      perSide: 'each leg',
+      description: 'Lie on back, one knee bent, other leg straight in air. Lift hips using the planted foot. Squeeze glute at top.',
+    ),
+    Exercise(
+      name: 'Wall Sit', 
+      duration: Duration(seconds: 30),
+      description: 'Lean back against a wall. Slide down until knees are at 90 degrees. Hold. Don\'t rest hands on knees!',
+    ),
   ],
 );
 
@@ -111,11 +236,31 @@ const corePowerWorkout = Workout(
   circuitRounds: 3,
   restBetweenRounds: Duration(seconds: 45),
   exercises: [
-    Exercise(name: 'Plank to Push-up', reps: 8),
-    Exercise(name: 'Russian Twists', reps: 20, description: 'Total count'),
-    Exercise(name: 'Leg Raises', reps: 12),
-    Exercise(name: 'Bicycle Crunches', reps: 20, description: 'Total count'),
-    Exercise(name: 'Dead Bug Hold', duration: Duration(seconds: 30)),
+    Exercise(
+      name: 'Plank to Push-up', 
+      reps: 8,
+      description: 'Start in elbow plank. Push up onto hand, then other hand to reach push-up position. Lower back down to elbows. Repeat.',
+    ),
+    Exercise(
+      name: 'Russian Twists', 
+      reps: 20, 
+      description: 'Sit on floor, knees bent, feet slightly off ground. Lean back engaging core. Twist torso side to side touching floor.',
+    ),
+    Exercise(
+      name: 'Leg Raises', 
+      reps: 12,
+      description: 'Lie on back, hands under hips. Lift straight legs up to 90 degrees. Lower slowly without touching floor. Keep lower back pressed down.',
+    ),
+    Exercise(
+      name: 'Bicycle Crunches', 
+      reps: 20, 
+      description: 'Lie on back. Bring opposite elbow to opposite knee while extending other leg. Pedal legs like a bicycle.',
+    ),
+    Exercise(
+      name: 'Dead Bug Hold', 
+      duration: Duration(seconds: 30),
+      description: 'Lie on back, arms and legs up (bug position). Press lower back into floor hard. Hold this position statically.',
+    ),
   ],
 );
 
@@ -130,11 +275,32 @@ const fullBodyWorkout = Workout(
   circuitRounds: 3,
   restBetweenRounds: Duration(seconds: 60),
   exercises: [
-    Exercise(name: 'Squat to Press', reps: 12, description: 'Use light weight or no weight'),
-    Exercise(name: 'Walking Lunges', reps: 10, perSide: 'each leg'),
-    Exercise(name: 'Push-ups', reps: 12),
-    Exercise(name: 'Glute Bridges', reps: 15),
-    Exercise(name: 'Plank', duration: Duration(seconds: 45)),
+    Exercise(
+      name: 'Squat to Press', 
+      reps: 12, 
+      description: 'Hold weights (or water bottles) at shoulders. Squat down. As you stand up, press weights overhead explosively.',
+    ),
+    Exercise(
+      name: 'Walking Lunges', 
+      reps: 10, 
+      perSide: 'each leg',
+      description: 'Take big steps forward, dropping back knee. Walk continuously. Focus on balance and control.',
+    ),
+    Exercise(
+      name: 'Push-ups', 
+      reps: 12,
+      description: 'Classic push-ups. Keep core tight. Chest to floor. Modifications: Incline push-ups (hands on bench) or knee push-ups.',
+    ),
+    Exercise(
+      name: 'Glute Bridges', 
+      reps: 15,
+      description: 'Lie on back, lift hips. This time try without resting on floor between reps. Keep the tension.',
+    ),
+    Exercise(
+      name: 'Plank', 
+      duration: Duration(seconds: 45),
+      description: 'Standard elbow plank. 45 seconds is a challenge. Breathe steadily. Do not hold your breath.',
+    ),
   ],
 );
 
@@ -151,12 +317,41 @@ const mobilityFlowWorkout = Workout(
   estimatedDuration: Duration(minutes: 15),
   targetRpe: 2,
   exercises: [
-    Exercise(name: 'Cat-Cow Stretch', reps: 10),
-    Exercise(name: 'Thread the Needle', reps: 8, perSide: 'each side'),
-    Exercise(name: 'Hip Circles', reps: 10, perSide: 'each direction'),
-    Exercise(name: "World's Greatest Stretch", reps: 5, perSide: 'each side'),
-    Exercise(name: 'Ankle Circles', reps: 10, perSide: 'each direction'),
-    Exercise(name: 'Neck Rolls', reps: 5, perSide: 'each direction'),
+    Exercise(
+      name: 'Cat-Cow Stretch', 
+      reps: 10,
+      description: 'Hands and knees. Arch back like an angry cat (head down). Then drop belly and look up (cow). Move slowly with your breath.',
+    ),
+    Exercise(
+      name: 'Thread the Needle', 
+      reps: 8, 
+      perSide: 'each side',
+      description: 'Hands and knees. Reach one arm underneath your body and rest shoulder on floor. Feel twist in upper back.',
+    ),
+    Exercise(
+      name: 'Hip Circles', 
+      reps: 10, 
+      perSide: 'each direction',
+      description: 'Hands and knees. Lift one knee and make big circles with your hip. Imagine drawing a circle with your knee cap.',
+    ),
+    Exercise(
+      name: "World's Greatest Stretch", 
+      reps: 5, 
+      perSide: 'each side',
+      description: 'Step into a deep lunge. Put opposite hand on floor. Reach other arm to sky. Twist torso. Complex but amazing for hips and back.',
+    ),
+    Exercise(
+      name: 'Ankle Circles', 
+      reps: 10, 
+      perSide: 'each direction',
+      description: 'Sit or stand. Rotate ankle in big circles. Full range of motion. Critical for runners.',
+    ),
+    Exercise(
+      name: 'Neck Rolls', 
+      reps: 5, 
+      perSide: 'each direction',
+      description: 'Gently roll head in circles. Ear to shoulder, chin to chest. Do not force it. Keep shoulders down.',
+    ),
   ],
 );
 
@@ -169,13 +364,46 @@ const fullStretchWorkout = Workout(
   estimatedDuration: Duration(minutes: 20),
   targetRpe: 2,
   exercises: [
-    Exercise(name: 'Standing Forward Fold', holdTime: Duration(seconds: 45)),
-    Exercise(name: 'Pigeon Pose', holdTime: Duration(seconds: 60), perSide: 'each side'),
-    Exercise(name: 'Seated Hamstring Stretch', holdTime: Duration(seconds: 45), perSide: 'each leg'),
-    Exercise(name: 'Supine Twist', holdTime: Duration(seconds: 45), perSide: 'each side'),
-    Exercise(name: 'Figure Four Stretch', holdTime: Duration(seconds: 45), perSide: 'each side'),
-    Exercise(name: 'Foam Roll Quads', duration: Duration(seconds: 60)),
-    Exercise(name: 'Foam Roll IT Band', duration: Duration(seconds: 60), perSide: 'each side'),
+    Exercise(
+      name: 'Standing Forward Fold', 
+      holdTime: Duration(seconds: 45),
+      description: 'Stand tall. Hinge at hips to fold forward. Let head hang heavy. Can bend knees slightly. Feel release in lower back and hamstrings.',
+    ),
+    Exercise(
+      name: 'Pigeon Pose', 
+      holdTime: Duration(seconds: 60), 
+      perSide: 'each side',
+      description: 'One leg forward, knee bent on ground. Back leg straight back. Fold over front leg. Deep hip stretch. Breathe into the tightness.',
+    ),
+    Exercise(
+      name: 'Seated Hamstring Stretch', 
+      holdTime: Duration(seconds: 45), 
+      perSide: 'each leg',
+      description: 'Sit on floor, one leg straight, one bent. Reach for toes of straight leg. Keep back straight-ish. Don\'t just hunch.',
+    ),
+    Exercise(
+      name: 'Supine Twist', 
+      holdTime: Duration(seconds: 45), 
+      perSide: 'each side',
+      description: 'Lie on back. Hug one knee, then pull it across body to the floor. Keep opposite shoulder on ground. Spinal twist.',
+    ),
+    Exercise(
+      name: 'Figure Four Stretch', 
+      holdTime: Duration(seconds: 45), 
+      perSide: 'each side',
+      description: 'Lie on back. Cross ankle over opposite knee. Pull the bottom leg towards you. Deep glute stretch.',
+    ),
+    Exercise(
+      name: 'Foam Roll Quads', 
+      duration: Duration(seconds: 60),
+      description: 'Lie fast down on foam roller (under thighs). Roll back and forth from hip to knee. It will hurt good.',
+    ),
+    Exercise(
+      name: 'Foam Roll IT Band', 
+      duration: Duration(seconds: 60), 
+      perSide: 'each side',
+      description: 'Lie on side with roller under outer thigh. Roll from hip to knee. Support weight with arms.',
+    ),
   ],
 );
 
@@ -188,13 +416,45 @@ const yogaFlowWorkout = Workout(
   estimatedDuration: Duration(minutes: 25),
   targetRpe: 3,
   exercises: [
-    Exercise(name: 'Sun Salutation A', reps: 3),
-    Exercise(name: 'Warrior I', holdTime: Duration(seconds: 30), perSide: 'each side'),
-    Exercise(name: 'Warrior II', holdTime: Duration(seconds: 30), perSide: 'each side'),
-    Exercise(name: 'Low Lunge', holdTime: Duration(seconds: 45), perSide: 'each side'),
-    Exercise(name: 'Lizard Pose', holdTime: Duration(seconds: 45), perSide: 'each side'),
-    Exercise(name: 'Happy Baby', holdTime: Duration(seconds: 60)),
-    Exercise(name: 'Savasana', duration: Duration(minutes: 2)),
+    Exercise(
+      name: 'Sun Salutation A', 
+      reps: 3,
+      description: 'Mountain pose -> Forward fold -> Plank -> Lower down -> Up dog -> Down dog -> Step forward -> Rise up. Repeat flow.',
+    ),
+    Exercise(
+      name: 'Warrior I', 
+      holdTime: Duration(seconds: 30), 
+      perSide: 'each side',
+      description: 'High lunge position. Back heel down at 45 degrees. Hips forward. Arms reaching straight up. Strong legs.',
+    ),
+    Exercise(
+      name: 'Warrior II', 
+      holdTime: Duration(seconds: 30), 
+      perSide: 'each side',
+      description: 'Wide stance. Front knee bent 90 degrees. Arms out to sides horizonally. Gaze over front hand. Open hips.',
+    ),
+    Exercise(
+      name: 'Low Lunge', 
+      holdTime: Duration(seconds: 45), 
+      perSide: 'each side',
+      description: 'Knee down lunge. Push hips forward. Lift chest. Sink into the hip stretch.',
+    ),
+    Exercise(
+      name: 'Lizard Pose', 
+      holdTime: Duration(seconds: 45), 
+      perSide: 'each side',
+      description: 'From low lunge, bring both hands to the inside of front foot. Lower onto elbows if flexible enough. Deep hip opener.',
+    ),
+    Exercise(
+      name: 'Happy Baby', 
+      holdTime: Duration(seconds: 60),
+      description: 'Lie on back. Grab outsides of feet. Pull knees towards armpits. Rock gently side to side.',
+    ),
+    Exercise(
+      name: 'Savasana', 
+      duration: Duration(minutes: 2),
+      description: 'Corpse pose. Lie flat on back. Palms up. Eyes closed. Relax every muscle. Do nothing.',
+    ),
   ],
 );
 
@@ -207,11 +467,36 @@ const lightMobilityWorkout = Workout(
   estimatedDuration: Duration(minutes: 15),
   targetRpe: 2,
   exercises: [
-    Exercise(name: 'Gentle Leg Swings', reps: 10, perSide: 'each leg'),
-    Exercise(name: 'Hip Circles', reps: 8, perSide: 'each direction'),
-    Exercise(name: 'Ankle Rolls', reps: 10, perSide: 'each direction'),
-    Exercise(name: 'Standing Quad Stretch', holdTime: Duration(seconds: 20), perSide: 'each leg'),
-    Exercise(name: 'Calf Stretch', holdTime: Duration(seconds: 20), perSide: 'each leg'),
+    Exercise(
+      name: 'Gentle Leg Swings', 
+      reps: 10, 
+      perSide: 'each leg',
+      description: 'Small range of motion. Just loosening up the hip joint. Don\'t force it.',
+    ),
+    Exercise(
+      name: 'Hip Circles', 
+      reps: 8, 
+      perSide: 'each direction',
+      description: 'Standing hands on hips. Rotate hips in circle like hula hooping.',
+    ),
+    Exercise(
+      name: 'Ankle Rolls', 
+      reps: 10, 
+      perSide: 'each direction',
+      description: 'Rotate ankles to ensure they are mobile for the run.',
+    ),
+    Exercise(
+      name: 'Standing Quad Stretch', 
+      holdTime: Duration(seconds: 20), 
+      perSide: 'each leg',
+      description: 'Pull heel to butt. Keep knees together. Gentle stretch.',
+    ),
+    Exercise(
+      name: 'Calf Stretch', 
+      holdTime: Duration(seconds: 20), 
+      perSide: 'each leg',
+      description: 'Heel down, toe up against wall or curb. Lean in slightly.',
+    ),
   ],
 );
 

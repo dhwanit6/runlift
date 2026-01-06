@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/atmospheric_background.dart';
 import '../../../data/auth_provider.dart';
+import '../../../core/constants/app_strings.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -221,13 +223,25 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       height: 56,
                       child: ElevatedButton(
                         onPressed: _isLoading ? null : _handleEmailLogin,
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                        ),
                         child: _isLoading
                             ? const SizedBox(
                                 height: 24,
                                 width: 24,
                                 child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black),
                               )
-                            : const Text('Log In'),
+                            : const FittedBox(
+                                child: Text(
+                                  'LOG IN',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 1,
+                                  ),
+                                ),
+                              ),
                       ),
                     ),
                     
@@ -269,11 +283,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         onPressed: () => context.go('/signup'),
                         child: RichText(
                           text: TextSpan(
-                            text: "Don't have an account? ",
+                            text: AppStrings.dontHaveAccount,
                             style: TextStyle(color: Colors.white.withAlpha(180)),
                             children: const [
                               TextSpan(
-                                text: 'Sign up',
+                                text: AppStrings.signUp,
                                 style: TextStyle(color: AppTheme.primary, fontWeight: FontWeight.bold),
                               ),
                             ],
@@ -281,6 +295,33 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ),
                       ),
                     ),
+
+                    const SizedBox(height: 16),
+
+                    // Privacy & Terms
+                    Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () async => await launchUrl(Uri.parse(AppStrings.privacyUrl)),
+                            child: Text(
+                              AppStrings.privacyPolicy,
+                              style: TextStyle(color: Colors.white.withAlpha(80), fontSize: 10, decoration: TextDecoration.underline),
+                            ),
+                          ),
+                          Text('  •  ', style: TextStyle(color: Colors.white.withAlpha(40), fontSize: 10)),
+                          GestureDetector(
+                            onTap: () async => await launchUrl(Uri.parse(AppStrings.termsUrl)),
+                            child: Text(
+                              AppStrings.termsOfService,
+                              style: TextStyle(color: Colors.white.withAlpha(80), fontSize: 10, decoration: TextDecoration.underline),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 8),
                   ],
                 ),
               ),

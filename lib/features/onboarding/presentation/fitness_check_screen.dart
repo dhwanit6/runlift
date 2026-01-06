@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/color_utils.dart';
 import '../../../shared/widgets/atmospheric_background.dart';
 import '../../../shared/widgets/glass_card.dart';
+import '../../../data/haptic_service.dart';
 
-class FitnessCheckScreen extends StatefulWidget {
+class FitnessCheckScreen extends ConsumerStatefulWidget {
   const FitnessCheckScreen({super.key});
 
   @override
-  State<FitnessCheckScreen> createState() => _FitnessCheckScreenState();
+  ConsumerState<FitnessCheckScreen> createState() => _FitnessCheckScreenState();
 }
 
-class _FitnessCheckScreenState extends State<FitnessCheckScreen> {
+class _FitnessCheckScreenState extends ConsumerState<FitnessCheckScreen> {
   String? selectedLevel;
 
   final levels = [
@@ -44,15 +46,21 @@ class _FitnessCheckScreenState extends State<FitnessCheckScreen> {
           child: Padding(
             padding: const EdgeInsets.all(32.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  'CALIBRATE',
-                  style: Theme.of(context).textTheme.labelLarge,
+                Center(
+                  child: Text(
+                    'CALIBRATE',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
                 ),
-                Text(
-                  'FITNESS LEVEL',
-                  style: Theme.of(context).textTheme.displaySmall,
+                Center(
+                  child: Text(
+                    'FITNESS LEVEL',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.displaySmall,
+                  ),
                 ),
                 
                 const SizedBox(height: 40),
@@ -73,7 +81,17 @@ class _FitnessCheckScreenState extends State<FitnessCheckScreen> {
 
                 const SizedBox(height: 24),
 
-                if (selectedLevel != null)
+                if (selectedLevel == null)
+                  const Center(
+                    child: Text(
+                      'Select your fitness level to continue',
+                      style: TextStyle(
+                        color: Colors.white38,
+                        fontSize: 14,
+                      ),
+                    ),
+                  )
+                else
                   SizedBox(
                     width: double.infinity,
                     height: 56,
@@ -91,8 +109,12 @@ class _FitnessCheckScreenState extends State<FitnessCheckScreen> {
   }
 
   Widget _buildLevelCard(Map<String, dynamic> level, bool isSelected) {
+    final haptics = ref.read(hapticServiceProvider);
     return GestureDetector(
-      onTap: () => setState(() => selectedLevel = level['id'] as String),
+      onTap: () {
+        haptics.tap();
+        setState(() => selectedLevel = level['id'] as String);
+      },
       child: GlassCard(
         padding: const EdgeInsets.all(20),
         opacity: isSelected ? 0.15 : 0.08,
@@ -106,25 +128,32 @@ class _FitnessCheckScreenState extends State<FitnessCheckScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      level['title'] as String,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: isSelected ? AppTheme.primary : Colors.white,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        level['title'] as String,
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          color: isSelected ? AppTheme.primary : Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    Text(
-                      level['subtitle'] as String,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.white54,
+                      const SizedBox(height: 4),
+                      Text(
+                        level['subtitle'] as String,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Colors.white54,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 if (isSelected)
-                  const Icon(Icons.check_circle_rounded, color: AppTheme.primary, size: 24),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 12),
+                    child: Icon(Icons.check_circle_rounded, color: AppTheme.primary, size: 24),
+                  ),
               ],
             ),
             if (isSelected) ...[

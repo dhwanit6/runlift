@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/color_utils.dart';
 import '../../../shared/widgets/atmospheric_background.dart';
 import '../../../shared/widgets/glass_card.dart';
+import '../../../data/haptic_service.dart';
 
-class GoalSelectionScreen extends StatefulWidget {
+class GoalSelectionScreen extends ConsumerStatefulWidget {
   const GoalSelectionScreen({super.key});
 
   @override
-  State<GoalSelectionScreen> createState() => _GoalSelectionScreenState();
+  ConsumerState<GoalSelectionScreen> createState() => _GoalSelectionScreenState();
 }
 
-class _GoalSelectionScreenState extends State<GoalSelectionScreen> {
+class _GoalSelectionScreenState extends ConsumerState<GoalSelectionScreen> {
   String? selectedGoal;
 
   final goals = [
@@ -47,15 +49,21 @@ class _GoalSelectionScreenState extends State<GoalSelectionScreen> {
           child: Padding(
             padding: const EdgeInsets.all(32.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  'CHOOSE YOUR',
-                  style: Theme.of(context).textTheme.labelLarge,
+                Center(
+                  child: Text(
+                    'CHOOSE YOUR',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
                 ),
-                Text(
-                  'OBJECTIVE',
-                  style: Theme.of(context).textTheme.displaySmall,
+                Center(
+                  child: Text(
+                    'OBJECTIVE',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.displaySmall,
+                  ),
                 ),
                 
                 const SizedBox(height: 40),
@@ -96,7 +104,22 @@ class _GoalSelectionScreenState extends State<GoalSelectionScreen> {
 
   Widget _buildGoalCard(Map<String, dynamic> goal, bool isSelected, bool isLocked) {
     return GestureDetector(
-      onTap: isLocked ? null : () => setState(() => selectedGoal = goal['id'] as String),
+      onTap: () {
+        final haptics = ref.read(hapticServiceProvider);
+        if (isLocked) {
+          haptics.medium();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('${goal['title']} unlocks after you complete Couch to 5K'),
+              backgroundColor: Colors.black87,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        } else {
+          haptics.tap();
+          setState(() => selectedGoal = goal['id'] as String);
+        }
+      },
       child: GlassCard(
         padding: const EdgeInsets.all(20),
         opacity: isSelected ? 0.15 : 0.08,
@@ -127,8 +150,10 @@ class _GoalSelectionScreenState extends State<GoalSelectionScreen> {
                     goal['title'] as String,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: isLocked ? Colors.white30 : Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
+                  const SizedBox(height: 4),
                   Text(
                     goal['subtitle'] as String,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -139,7 +164,10 @@ class _GoalSelectionScreenState extends State<GoalSelectionScreen> {
               ),
             ),
             if (isLocked)
-              const Icon(Icons.lock_outline, color: Colors.white30, size: 20),
+              const Padding(
+                padding: EdgeInsets.only(left: 8),
+                child: Icon(Icons.lock_outline, color: Colors.white30, size: 20),
+              ),
           ],
         ),
       ),

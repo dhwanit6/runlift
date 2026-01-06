@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
-import '../../../core/utils/color_utils.dart';
 import '../../../shared/widgets/glass_card.dart';
+import '../../../shared/widgets/premium_button.dart';
 import '../../../shared/widgets/atmospheric_background.dart';
 import '../../../domain/models/training_program.dart';
 import '../../../data/training_provider.dart';
-import '../../../domain/models/injury.dart';
+import '../../../data/active_workout_provider.dart';
+import '../../../shared/widgets/skeleton_loading.dart';
+import '../../../core/constants/app_strings.dart';
 
 class TodayScreen extends ConsumerWidget {
   const TodayScreen({super.key});
@@ -15,105 +17,123 @@ class TodayScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final trainingState = ref.watch(trainingProvider);
+    final theme = Theme.of(context);
     
-    // Show loading state while data is being fetched
     if (trainingState.isLoading) {
       return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(color: AppTheme.primary),
+        backgroundColor: AppTheme.background,
+        body: AtmosphericBackground(
+          child: SafeArea(
+            child: TodayScreenSkeleton(),
+          ),
         ),
       );
     }
     
-    final injuryService = ref.watch(injuryServiceProvider);
     final today = trainingState.today;
-    final prediction = injuryService.getPrediction(today.dayNumber);
     final workout = today.workout;
+    final progress = trainingState.currentDay / 28;
 
     return Scaffold(
-
       body: AtmosphericBackground(
         child: SafeArea(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(24, 24, 24, 120),
+            padding: const EdgeInsets.fromLTRB(20, 24, 20, 120),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Header
-                Text(
-                  'WEEK ${today.weekNumber} • DAY ${today.dayNumber}',
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    fontSize: 12,
-                    letterSpacing: 2,
-                  ),
+                // Header - Editorial Hierarchy
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'DAY ${trainingState.currentDay}'.toUpperCase(),
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              color: AppTheme.primary,
+                              letterSpacing: 4,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'TODAY',
+                            style: theme.textTheme.displayMedium,
+                          ),
+                        ],
+                      ),
+                    ),
+                    _buildProgressRing(progress),
+                  ],
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  today.isRestDay ? 'REST & RECOVER' : workout.name,
-                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                    fontSize: 36,
-                  ),
-                ),
+                
+                const SizedBox(height: 40),
 
-                const SizedBox(height: 12),
-                Text(
-                  today.motivationBefore,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppTheme.textSecondary,
-                    fontStyle: FontStyle.italic,
-                  ),
-                ),
-
-                if (prediction.expectedDiscomforts.isNotEmpty) ...[
+                // Injury Warning
+                if (today.injuryNote != null) ...[
+                  _buildInjuryWarning(context, today.injuryNote!),
                   const SizedBox(height: 24),
-                  _buildInjuryAlert(context, prediction),
                 ],
-
-                const SizedBox(height: 32),
-
-                // Today's Workout Card
+                
+                // Main workout card - Bento Centerpiece
                 if (!today.isRestDay)
-                  _buildWorkoutCard(context, today, workout)
+                  _buildWorkoutCard(context, ref, today, workout)
                 else
-                  _buildRestCard(context, today),
-
+                  _buildRestDayCard(context, ref),
+                
                 const SizedBox(height: 24),
-
-                // Stats Row
+                
+                // Weekly Overview - Bento Support
+                _buildWeekProgress(context, trainingState),
+                
+                const SizedBox(height: 24),
+                
+                // Global Stats - Bento HUD
                 Row(
                   children: [
-                    Expanded(child: _buildStatCard(context, '${trainingState.completedDays.length}', 'TOTAL DAYS', Icons.local_fire_department_rounded, AppTheme.secondary)),
-                    const SizedBox(width: 12),
-                    Expanded(child: _buildStatCard(context, '${trainingState.completedDays.where((d) => (d-1)~/7 + 1 == today.weekNumber).length}/7', 'THIS WEEK', Icons.calendar_today_rounded, AppTheme.primary)),
+                    Expanded(
+                      child: _buildStatCard(
+                        context,
+                        '${trainingState.completedDays.length}',
+                        'COMPLETED',
+                        Icons.check_rounded,
+                        AppTheme.success,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: _buildStatCard(
+                        context,
+                        '${28 - trainingState.completedDays.length}',
+                        'REMAINING',
+                        Icons.timer_outlined,
+                        AppTheme.warning,
+                      ),
+                    ),
                   ],
                 ),
 
                 const SizedBox(height: 24),
 
-                // Weekly Overview
-                Text(
-                  'WEEKLY PROGRESS',
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    fontSize: 12,
-                    letterSpacing: 2,
+                // Secondary Action - Skip
+                if (trainingState.currentDay < 28)
+                  Center(
+                    child: TextButton(
+                      onPressed: () => _showSkipConfirmation(context, ref),
+                      child: Text(
+                        AppStrings.skipToday.toUpperCase(),
+                        style: const TextStyle(
+                          color: Colors.white38,
+                          fontSize: 12,
+                          letterSpacing: 2,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 12),
-                GlassCard(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: List.generate(7, (index) {
-                      final dayNum = (today.weekNumber - 1) * 7 + index + 1;
-                      final isCompleted = trainingState.completedDays.contains(dayNum);
-                      final dayData = trainingState.program.getDay(dayNum);
-                      final isRunDay = dayData?.workout.type == WorkoutType.run;
-                      final dayNames = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-                      
-                      return _buildDayPill(context, dayNames[index], isCompleted, isRunDay);
-                    }),
-                  ),
-                ),
               ],
             ),
           ),
@@ -122,217 +142,292 @@ class TodayScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildInjuryAlert(BuildContext context, InjuryPrediction prediction) {
-    return GlassCard(
-      padding: const EdgeInsets.all(16),
-      opacity: 0.15,
-      border: Border.all(color: Colors.orange.withAlphaValue(0.3)),
-      child: Row(
-        children: [
-          const Icon(Icons.info_outline_rounded, color: Colors.orangeAccent, size: 24),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'BODY CHECK: ${prediction.expectedDiscomforts.first.symptom}',
-                  style: const TextStyle(
-                    color: Colors.orangeAccent,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                  ),
-                ),
-                Text(
-                  prediction.expectedDiscomforts.first.reassuranceMessage,
-                  style: const TextStyle(
-                    color: Colors.white70,
-                    fontSize: 11,
-                  ),
-                ),
-              ],
-            ),
+  Widget _buildProgressRing(double progress) {
+    return Column(
+      children: [
+        Container(
+          width: 72,
+          height: 72,
+          padding: const EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: Colors.white.withAlpha(20), width: 1),
           ),
-        ],
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              SizedBox(
+                width: 60,
+                height: 60,
+                child: CircularProgressIndicator(
+                  value: progress,
+                  strokeWidth: 6,
+                  strokeCap: StrokeCap.round,
+                  backgroundColor: Colors.white.withAlpha(10),
+                  color: AppTheme.primary,
+                ),
+              ),
+              Text(
+                '${(progress * 100).round()}%',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 8),
+        const Text(
+          'PROGRESS',
+          style: TextStyle(
+            color: Colors.white38,
+            fontSize: 8,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 1.5,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTypeTag(WorkoutType type) {
+    final isRun = type == WorkoutType.run;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: (isRun ? AppTheme.primary : Colors.purple).withAlpha(30),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: (isRun ? AppTheme.primary : Colors.purple).withAlpha(60),
+          width: 1,
+        ),
+      ),
+      child: Text(
+        isRun ? 'RUN' : 'STRENGTH',
+        style: TextStyle(
+          color: isRun ? AppTheme.primary : Colors.purpleAccent,
+          fontWeight: FontWeight.w900,
+          fontSize: 10,
+          letterSpacing: 1.5,
+        ),
       ),
     );
   }
 
-  Widget _buildWorkoutCard(BuildContext context, TrainingDay today, Workout workout) {
+  Widget _buildWorkoutCard(BuildContext context, WidgetRef ref, TrainingDay today, Workout workout) {
+    final activeWorkout = ref.watch(activeWorkoutProvider);
+    final isThisWorkoutActive = activeWorkout.workout?.id == workout.id;
+    final theme = Theme.of(context);
+    
     return GlassCard(
-      padding: const EdgeInsets.all(28),
-      opacity: 0.12,
-      border: Border.all(color: AppTheme.primary.withAlphaValue(0.3), width: 1),
+      padding: const EdgeInsets.all(24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              _buildTypeTag(workout.type),
+              const Spacer(),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: workout.type == WorkoutType.run ? AppTheme.primary : AppTheme.secondary,
-                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.white.withAlpha(15),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                child: Text(
-                  workout.type.name.toUpperCase(),
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: Colors.black,
-                    fontSize: 10,
-                    letterSpacing: 1,
-                  ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.timer_outlined, size: 14, color: Colors.white70),
+                    const SizedBox(width: 4),
+                    Text(
+                      '${workout.estimatedDuration.inMinutes} MIN',
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: AppTheme.primary.withAlphaValue(0.15),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Icon(Icons.timer_rounded, color: AppTheme.primary, size: 20),
               ),
             ],
           ),
           const SizedBox(height: 24),
           Text(
             workout.name,
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-              fontSize: 28,
+            style: theme.textTheme.headlineLarge?.copyWith(
+              color: Colors.white,
+              fontSize: 32,
+              fontStyle: FontStyle.italic,
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            workout.description,
-            style: TextStyle(color: Colors.white54, fontSize: 13),
-          ),
-          const SizedBox(height: 24),
-          if (workout.type == WorkoutType.run)
-            _buildRunIntervalsSummary(context, workout)
-          else if (workout.exercises != null)
-            _buildStrengthSummary(context, workout),
-          const SizedBox(height: 24),
-          _buildDurationBar(context, workout),
-          const SizedBox(height: 24),
-          SizedBox(
-            width: double.infinity,
-            height: 56,
-            child: ElevatedButton.icon(
-              onPressed: () => context.push('/workout/${workout.id}'),
-              icon: const Icon(Icons.play_arrow_rounded, size: 24),
-              label: const Text('START WORKOUT'),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildRestCard(BuildContext context, TrainingDay today) {
-    return GlassCard(
-      padding: const EdgeInsets.all(28),
-      child: Column(
-        children: [
-          const Icon(Icons.nightlight_round, color: AppTheme.secondary, size: 48),
-          const SizedBox(height: 16),
-          Text(
-            'REST DAY',
-            style: Theme.of(context).textTheme.headlineMedium,
           ),
           const SizedBox(height: 12),
           Text(
-            today.workout.description,
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.white70),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildRunIntervalsSummary(BuildContext context, Workout workout) {
-    if (workout.intervals == null) return const SizedBox.shrink();
-    
-    return Row(
-      children: [
-        _buildInfoChip(context, '${workout.intervals![0].duration.inMinutes} min', 'RUN'),
-        const SizedBox(width: 8),
-        const Icon(Icons.arrow_forward_rounded, color: Colors.white24, size: 16),
-        const SizedBox(width: 8),
-        _buildInfoChip(context, '${workout.intervals![1].duration.inMinutes} min', 'WALK'),
-        const SizedBox(width: 8),
-        const Icon(Icons.close_rounded, color: Colors.white24, size: 16),
-        const SizedBox(width: 8),
-        _buildInfoChip(context, '${workout.intervalRepeats ?? 1}', 'ROUNDS'),
-      ],
-    );
-  }
-
-  Widget _buildStrengthSummary(BuildContext context, Workout workout) {
-    return Row(
-      children: [
-        _buildInfoChip(context, '${workout.exercises?.length}', 'EXERCISES'),
-        const SizedBox(width: 8),
-        _buildInfoChip(context, '${workout.circuitRounds}', 'ROUNDS'),
-        const SizedBox(width: 8),
-        _buildInfoChip(context, '${workout.targetRpe}', 'RPE'),
-      ],
-    );
-  }
-
-  Widget _buildDurationBar(BuildContext context, Workout workout) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      decoration: BoxDecoration(
-        color: Colors.white.withAlphaValue(0.06),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            'Total Duration',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white54),
-          ),
-          Text(
-            '${workout.estimatedDuration.inMinutes} minutes',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+            workout.description,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              height: 1.6,
+              color: Colors.white70,
             ),
           ),
+          const SizedBox(height: 32),
+          PremiumButton(
+            label: isThisWorkoutActive ? 'RESUME WORKOUT' : 'START WORKOUT',
+            icon: isThisWorkoutActive ? Icons.play_arrow_rounded : Icons.flash_on_rounded,
+            onPressed: () => context.push('/workout/${workout.id}'),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildInfoChip(BuildContext context, String value, String label) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: Colors.white.withAlphaValue(0.08),
-        borderRadius: BorderRadius.circular(8),
-      ),
+  Widget _buildRestDayCard(BuildContext context, WidgetRef ref) {
+    return GlassCard(
+      padding: const EdgeInsets.all(32),
       child: Column(
         children: [
-          Text(
-            value,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.blue.withAlpha(20),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.self_improvement_rounded,
+              size: 48,
+              color: Colors.blue,
             ),
           ),
-          Text(
-            label,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Colors.white38,
-              fontSize: 9,
-              letterSpacing: 1,
+          const SizedBox(height: 24),
+          const Text(
+            'REST DAY',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 28,
+              fontWeight: FontWeight.w900,
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+          const SizedBox(height: 12),
+          const Text(
+            'Active recovery is essential for progress. Focus on mobility and hydration.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white60,
+              fontSize: 14,
+              height: 1.6,
+            ),
+          ),
+          const SizedBox(height: 32),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildRecoveryItem(Icons.water_drop_rounded, 'Hydrate'),
+              _buildRecoveryItem(Icons.bedtime_rounded, 'Sleep'),
+              _buildRecoveryItem(Icons.restaurant_rounded, 'Fuel'),
+            ],
+          ),
+          const SizedBox(height: 32),
+          SizedBox(
+            width: double.infinity,
+            child: PremiumButton(
+              label: 'SKIP REST',
+              isSecondary: true,
+              onPressed: () => _showSkipConfirmation(context, ref),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildRecoveryItem(IconData icon, String label) {
+    return Column(
+      children: [
+        Icon(icon, color: Colors.blue.withAlpha(150), size: 24),
+        const SizedBox(height: 8),
+        Text(
+          label.toUpperCase(),
+          style: const TextStyle(
+            color: Colors.white38,
+            fontSize: 10,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 1,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildWeekProgress(BuildContext context, TrainingState state) {
+    final weekDays = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+    final currentWeekStart = ((state.currentDay - 1) ~/ 7) * 7 + 1;
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 4),
+          child: Text(
+            'WEEK ${((state.currentDay - 1) ~/ 7) + 1} PROGRESS'.toUpperCase(),
+            style: const TextStyle(
+              color: Colors.white38,
+              fontSize: 11,
+              letterSpacing: 2,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: List.generate(7, (index) {
+            final dayNum = currentWeekStart + index;
+            final isCompleted = state.completedDays.contains(dayNum);
+            final isToday = dayNum == state.currentDay;
+            
+            return _buildDayIndicator(weekDays[index], isCompleted, isToday);
+          }),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDayIndicator(String label, bool isCompleted, bool isToday) {
+    return Column(
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            color: isToday ? AppTheme.primary : Colors.white24,
+            fontSize: 12,
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          width: 42,
+          height: 42,
+          decoration: BoxDecoration(
+            color: isToday 
+                ? AppTheme.primary.withAlpha(40)
+                : isCompleted 
+                    ? AppTheme.success.withAlpha(30)
+                    : Colors.white.withAlpha(5),
+            borderRadius: BorderRadius.circular(14),
+            border: isToday 
+                ? Border.all(color: AppTheme.primary, width: 2)
+                : Border.all(color: Colors.white.withAlpha(10), width: 1),
+          ),
+          child: Center(
+            child: isCompleted 
+                ? const Icon(Icons.check_rounded, color: AppTheme.success, size: 20)
+                : isToday
+                  ? Container(width: 6, height: 6, decoration: const BoxDecoration(color: AppTheme.primary, shape: BoxShape.circle))
+                  : null,
+          ),
+        ),
+      ],
     );
   }
 
@@ -342,27 +437,24 @@ class TodayScreen extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Icon(icon, color: color, size: 22),
-              Text(
-                value,
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  color: color,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 26,
-                ),
-              ),
-            ],
+          Icon(icon, color: color, size: 24),
+          const SizedBox(height: 16),
+          Text(
+            value,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 28,
+              fontWeight: FontWeight.w900,
+              fontStyle: FontStyle.italic,
+            ),
           ),
-          const SizedBox(height: 8),
           Text(
             label,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppTheme.textSecondary,
-              letterSpacing: 1,
+            style: const TextStyle(
+              color: Colors.white38,
               fontSize: 10,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 1.5,
             ),
           ),
         ],
@@ -370,37 +462,76 @@ class TodayScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildDayPill(BuildContext context, String day, bool isCompleted, bool isRunDay) {
-    return Container(
-      width: 38,
-      height: 50,
-      decoration: BoxDecoration(
-        color: isCompleted
-            ? (isRunDay ? AppTheme.primary : AppTheme.success)
-            : Colors.white.withAlphaValue(0.06),
-        borderRadius: BorderRadius.circular(12),
-        border: isRunDay && !isCompleted
-            ? Border.all(color: AppTheme.primary.withAlphaValue(0.4), width: 1)
-            : null,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+  Widget _buildInjuryWarning(BuildContext context, String note) {
+    return GlassCard(
+      backgroundColor: Colors.orange.withAlpha(15),
+      border: Border.all(color: Colors.orange.withAlpha(40), width: 1),
+      padding: const EdgeInsets.all(16),
+      child: Row(
         children: [
-          Text(
-            day,
-            style: TextStyle(
-              color: isCompleted ? Colors.black : Colors.white54,
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.orange.withAlpha(30),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(Icons.warning_amber_rounded, color: Colors.orange, size: 20),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'INJURY PROTOCOL',
+                  style: TextStyle(
+                    color: Colors.orange,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 10,
+                    letterSpacing: 2,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  note,
+                  style: const TextStyle(color: Colors.white70, fontSize: 13, height: 1.4),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 2),
-          Icon(
-            isCompleted
-                ? Icons.check_rounded
-                : (isRunDay ? Icons.directions_run_rounded : Icons.self_improvement_rounded),
-            size: 14,
-            color: isCompleted ? Colors.black : Colors.white30,
+        ],
+      ),
+    );
+  }
+
+  void _showSkipConfirmation(BuildContext context, WidgetRef ref) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppTheme.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        title: const Text('Skip Protocol?', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        content: Text(
+          AppStrings.skipConfirmation,
+          style: const TextStyle(color: Colors.white70, height: 1.5),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('CANCEL', style: TextStyle(color: Colors.white38, fontWeight: FontWeight.bold)),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              ref.read(trainingProvider.notifier).skipDay();
+              Navigator.pop(ctx);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red.withAlpha(50),
+              foregroundColor: Colors.red,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              elevation: 0,
+            ),
+            child: const Text('SKIP', style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ],
       ),

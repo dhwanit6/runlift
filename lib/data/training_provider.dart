@@ -79,10 +79,12 @@ class TrainingState {
   /// Check if a specific day is completed
   bool isDayCompleted(int dayNumber) => completedDays.contains(dayNumber);
 
-  /// Get current streak count
+  /// Get current streak count - DEPRECATED: Use achievementsProvider.currentStreak instead
+  /// This is kept for backward compatibility but reads from completedDays as fallback
   int get currentStreak {
     if (completedDays.isEmpty) return 0;
     
+    // Simple consecutive count from end of list
     final sorted = List<int>.from(completedDays)..sort();
     int streak = 1;
     
@@ -165,6 +167,37 @@ class TrainingNotifier extends Notifier<TrainingState> {
 
     state = state.copyWith(
       completedDays: newCompleted,
+      currentDay: nextDay,
+      errorMessage: null,
+    );
+
+    await _saveProgress();
+  }
+
+  /// Undo completing a day
+  Future<void> undoCompleteDay(int dayNumber) async {
+    if (!state.completedDays.contains(dayNumber)) return;
+
+    final newCompleted = state.completedDays.where((d) => d != dayNumber).toList();
+    // Revert currentDay to the day we just un-completed if it was the last one
+    final newCurrentDay = dayNumber;
+
+    state = state.copyWith(
+      completedDays: newCompleted,
+      currentDay: newCurrentDay,
+    );
+
+    await _saveProgress();
+  }
+
+  /// Skip the current day without marking it as completed
+  Future<void> skipDay() async {
+    final dayNumber = state.currentDay;
+    if (dayNumber >= 28) return;
+
+    final nextDay = dayNumber + 1;
+
+    state = state.copyWith(
       currentDay: nextDay,
       errorMessage: null,
     );

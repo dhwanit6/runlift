@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 
 /// Social sharing service for viral growth
@@ -24,7 +23,11 @@ I'm training with RunLift - the 28-day Couch to 5K app.
 #RunLift #CouchTo5K #Running #Fitness
 ''';
 
-    await Share.share(message);
+    try {
+      await Share.share(message);
+    } catch (e) {
+      // Sharing failed (no share app, cancelled, etc.) - ignore silently
+    }
   }
 
   /// Share milestone achievement
@@ -43,7 +46,11 @@ From couch to 5K, one day at a time. 💪
 #RunLift #Achievement #Running #FitnessJourney
 ''';
 
-    await Share.share(message);
+    try {
+      await Share.share(message);
+    } catch (e) {
+      // Sharing failed - ignore silently
+    }
   }
 
   /// Share streak achievement
@@ -63,7 +70,11 @@ Who else is on a streak? 🙋‍♂️
 #RunLift #Streak #Consistency #Running
 ''';
 
-    await Share.share(message);
+    try {
+      await Share.share(message);
+    } catch (e) {
+      // Sharing failed - ignore silently
+    }
   }
 
   /// Share program completion
@@ -80,7 +91,11 @@ If I can do it, you can too. Download RunLift and start your journey!
 #RunLift #5KRunner #TransformationComplete #Running
 ''';
 
-    await Share.share(message);
+    try {
+      await Share.share(message);
+    } catch (e) {
+      // Sharing failed - ignore silently
+    }
   }
 
   /// Share invite to friend
@@ -96,7 +111,11 @@ Download it and let's train together! 🏃‍♂️🏃‍♀️
 #RunLift #CouchTo5K
 ''';
 
-    await Share.share(message);
+    try {
+      await Share.share(message);
+    } catch (e) {
+      // Sharing failed - ignore silently
+    }
   }
 
   /// Generate shareable image text (for screenshot sharing)

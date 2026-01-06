@@ -1,4 +1,6 @@
 /// Scientific injury prediction and red flag data.
+
+library;
 /// 
 /// This file contains data derived from physiotherapist and marathon runner
 /// perspectives to predict and manage common running injuries.

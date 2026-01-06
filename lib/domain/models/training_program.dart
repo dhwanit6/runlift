@@ -1,4 +1,5 @@
 /// Training program domain models for the 5K in 28 days program.
+library;
 /// 
 /// This file contains all the core models that represent the training
 /// structure: programs, weeks, days, and individual workouts.
