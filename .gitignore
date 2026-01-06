@@ -3,6 +3,7 @@
 *.log
 *.pyc
 *.swp
+*.txt
 .DS_Store
 .atom/
 .build/
@@ -52,3 +53,6 @@ app.*.map.json
 *.keystore
 *.jks
 key.properties
+local.properties
+google-services.json
+GoogleService-Info.plist
